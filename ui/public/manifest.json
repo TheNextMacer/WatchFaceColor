@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Watch Farbfinder",
+  "name": "Apple Watch Farbfinder",
+  "description": "Tool zum Finden der perfekten Apple Watch Zifferblatt-Farbe",
   "icons": [
     {
       "src": "favicon.ico",
