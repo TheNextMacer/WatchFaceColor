@@ -86,12 +86,12 @@ const MatchingColorPresenter = ({ selectedColor, predefinedColors }) => {
     }, [selectedColor, predefinedColors]);
 
     return (
-        <div>
-            <div className="mb-4">
+        <div className="w-full">
+            <div className="mb-4 p-3">
                 <h3 className="text-base font-semibold mb-2">Ausgewählte Farbe</h3>
                 <div className="flex items-center gap-3">
                     <div
-                        className="w-8 h-8 rounded-full border-2 border-white"
+                        className="w-8 h-8 rounded-full border-2 border-white shadow-lg"
                         style={{ backgroundColor: selectedColor || 'rgb(128, 128, 128)' }}
                     />
                     {isInitialState && (
@@ -102,35 +102,40 @@ const MatchingColorPresenter = ({ selectedColor, predefinedColors }) => {
                 </div>
             </div>
 
-            <div>
+            <div className="p-3">
                 <h3 className="text-base font-semibold mb-3">
                     {isInitialState ? "Verfügbare Farben" : "Ähnlichste Farben"}
                 </h3>
                 {isInitialState ? (
-                    <div className="flex items-center justify-center p-6 border-2 border-dashed border-gray-600 rounded-lg">
+                    <div className="flex items-center justify-center p-4 border-2 border-dashed border-gray-600 rounded-lg min-h-[120px]">
                         <div className="text-center">
-                            <Palette size={32} className="mx-auto text-gray-500 mb-3" />
-                            <p className="text-sm text-gray-400">
+                            <Palette size={24} className="mx-auto text-gray-500 mb-2" />
+                            <p className="text-xs sm:text-sm text-gray-400">
                                 Wählen Sie eine Farbe aus dem Bild aus
                             </p>
                         </div>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3">
                         {matchingColors.map((color, index) => (
                             <div
                                 key={index}
-                                className="bg-gray-700 rounded-lg p-3 flex flex-col items-center"
+                                className="bg-gray-700/50 backdrop-blur-sm rounded-lg p-2 sm:p-3 flex flex-col items-center"
                             >
                                 <div
-                                    className="w-12 h-12 rounded-full border-2 border-white mb-2 relative"
+                                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white mb-2 relative shadow-lg"
                                     style={{ backgroundColor: color.hex }}
                                 >
                                     {index === 0 && (
-                                        <CheckCircle className="absolute -top-1 -right-1 text-green-500 bg-gray-800 rounded-full w-4 h-4" />
+                                        <CheckCircle
+                                            className="absolute -top-1 -right-1 text-green-500 bg-gray-800 rounded-full"
+                                            size={16}
+                                        />
                                     )}
                                 </div>
-                                <span className="text-sm font-medium">{color.name}</span>
+                                <span className="text-xs sm:text-sm font-medium text-center">
+                                    {color.name}
+                                </span>
                             </div>
                         ))}
                     </div>

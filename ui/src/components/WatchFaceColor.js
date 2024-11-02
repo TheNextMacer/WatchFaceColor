@@ -51,22 +51,20 @@ const WatchFaceColor = () => {
     ];
 
     return (
-        <div className="max-w-7xl mx-auto bg-gray-800 rounded-xl shadow-lg max-h-[calc(100vh-120px)] overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2 h-full">
-                {/* Linke Spalte */}
-                <div className="p-4 border-b md:border-b-0 md:border-r border-gray-700 overflow-auto">
-                    <h2 className="text-lg font-bold mb-4">Farbe auswählen</h2>
-                    <ColorChooser onColorSelect={setSelectedColor} />
-                </div>
+        <div className="relative z-10 grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+            {/* Linke Spalte */}
+            <div className="bg-gray-800/30 backdrop-filter backdrop-blur-xl rounded-3xl p-6 shadow-2xl">
+                <h2 className="text-2xl font-bold mb-6">Farbe auswählen</h2>
+                <ColorChooser onColorSelect={setSelectedColor} />
+            </div>
 
-                {/* Rechte Spalte */}
-                <div className="p-4 overflow-auto">
-                    <h2 className="text-lg font-bold mb-4">Passende Farben</h2>
-                    <MatchingColorPresenter
-                        selectedColor={selectedColor}
-                        predefinedColors={predefinedColors}
-                    />
-                </div>
+            {/* Rechte Spalte */}
+            <div className="bg-gray-800/30 backdrop-filter backdrop-blur-xl rounded-3xl p-6 shadow-2xl">
+                <h2 className="text-2xl font-bold mb-6">Passende Farben</h2>
+                <MatchingColorPresenter
+                    selectedColor={selectedColor}
+                    predefinedColors={predefinedColors}
+                />
             </div>
         </div>
     );

@@ -2,19 +2,17 @@ import { Watch } from 'lucide-react';
 
 const Header = () => {
     return (
-        <header className="bg-gray-800/50 backdrop-blur-sm border-b border-gray-700 py-3 sm:py-4 px-4 sm:px-6 mb-4 sm:mb-6 rounded-xl shadow-lg">
-            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
-                <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-2 rounded-lg shadow-md">
-                    <Watch size={24} className="text-white" />
-                </div>
-                <div className="text-center sm:text-left">
-                    <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-200 text-transparent bg-clip-text">
+        <header className="relative z-10 mb-12 py-6">
+            <div className="flex flex-col items-center justify-center mb-4">
+                <div className="flex items-center justify-center mb-4">
+                    <Watch className="w-12 h-12 sm:w-16 sm:h-16 mr-4 text-blue-400 animate-pulse" />
+                    <h1 className="text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
                         Apple Watch Farbfinder
                     </h1>
-                    <p className="text-xs sm:text-sm text-gray-400">
-                        Finden Sie die perfekte Farbe für Ihr Zifferblatt
-                    </p>
                 </div>
+                <p className="text-lg sm:text-xl text-center text-gray-300">
+                    Finden Sie die perfekte Farbe für Ihr Zifferblatt
+                </p>
             </div>
         </header>
     );
