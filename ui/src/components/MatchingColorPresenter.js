@@ -3,6 +3,8 @@ import { CheckCircle, Palette } from 'lucide-react';
 
 const MatchingColorPresenter = ({ selectedColor, predefinedColors }) => {
     const [matchingColors, setMatchingColors] = useState([]);
+    const [complementaryColor, setComplementaryColor] = useState(null);
+    const [complementaryMatches, setComplementaryMatches] = useState([]);
     const isInitialState = !selectedColor;
 
     const rgbToLab = (r, g, b) => {
@@ -67,9 +69,21 @@ const MatchingColorPresenter = ({ selectedColor, predefinedColors }) => {
         ];
     };
 
+    const calculateComplementaryColor = (color) => {
+        // RGB aus dem String extrahieren
+        const rgb = color.match(/\d+/g).map(Number);
+
+        // Komplementärfarbe berechnen (255 - Originalwert)
+        const complementaryRgb = rgb.map(value => 255 - value);
+
+        // Zurück zum RGB-String konvertieren
+        return `rgb(${complementaryRgb.join(',')})`;
+    };
+
     useEffect(() => {
         if (selectedColor) {
             try {
+                // Ähnlichste Farben für die ausgewählte Farbe
                 const sortedColors = [...predefinedColors]
                     .map(color => ({
                         ...color,
@@ -79,66 +93,95 @@ const MatchingColorPresenter = ({ selectedColor, predefinedColors }) => {
                     .slice(0, 5);
 
                 setMatchingColors(sortedColors);
+
+                // Komplementärfarbe berechnen
+                const complementary = calculateComplementaryColor(selectedColor);
+                setComplementaryColor(complementary);
+
+                // Ähnlichste Farben für die Komplementärfarbe
+                const complementaryMatches = [...predefinedColors]
+                    .map(color => ({
+                        ...color,
+                        distance: calculateColorDistance(complementary, color.hex)
+                    }))
+                    .sort((a, b) => a.distance - b.distance)
+                    .slice(0, 5);
+
+                setComplementaryMatches(complementaryMatches);
             } catch (error) {
-                console.error("Error calculating matching colors:", error);
+                console.error("Error calculating colors:", error);
             }
         }
     }, [selectedColor, predefinedColors]);
 
+    const ColorGrid = ({ colors, title }) => (
+        <div className="mb-6">
+            <h3 className="text-base font-semibold mb-3">{title}</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3">
+                {colors.map((color, index) => (
+                    <div
+                        key={index}
+                        className="bg-gray-700/50 backdrop-blur-sm rounded-lg p-2 sm:p-3 flex flex-col items-center"
+                    >
+                        <div
+                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white mb-2 relative shadow-lg"
+                            style={{ backgroundColor: color.hex }}
+                        >
+                            {index === 0 && (
+                                <CheckCircle
+                                    className="absolute -top-1 -right-1 text-green-500 bg-gray-800 rounded-full"
+                                    size={16}
+                                />
+                            )}
+                        </div>
+                        <span className="text-xs sm:text-sm font-medium text-center">
+                            {color.name}
+                        </span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+
     return (
         <div className="w-full">
             <div className="mb-4 p-3">
-                <h3 className="text-base font-semibold mb-2">Ausgewählte Farbe</h3>
-                <div className="flex items-center gap-3">
-                    <div
-                        className="w-8 h-8 rounded-full border-2 border-white shadow-lg"
-                        style={{ backgroundColor: selectedColor || 'rgb(128, 128, 128)' }}
-                    />
-                    {isInitialState && (
-                        <span className="text-sm text-gray-400 italic">
-                            Keine Farbe ausgewählt
-                        </span>
+                <h3 className="text-base font-semibold mb-2">Selected Colors</h3>
+                <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-3">
+                        <div
+                            className="w-8 h-8 rounded-full border-2 border-white shadow-lg"
+                            style={{ backgroundColor: selectedColor || 'rgb(128, 128, 128)' }}
+                        />
+                        <span className="text-sm">Selected Color</span>
+                    </div>
+                    {!isInitialState && (
+                        <div className="flex items-center gap-3">
+                            <div
+                                className="w-8 h-8 rounded-full border-2 border-white shadow-lg"
+                                style={{ backgroundColor: complementaryColor }}
+                            />
+                            <span className="text-sm">Complementary Color</span>
+                        </div>
                     )}
                 </div>
             </div>
 
             <div className="p-3">
-                <h3 className="text-base font-semibold mb-3">
-                    {isInitialState ? "Verfügbare Farben" : "Ähnlichste Farben"}
-                </h3>
                 {isInitialState ? (
                     <div className="flex items-center justify-center p-4 border-2 border-dashed border-gray-600 rounded-lg min-h-[120px]">
                         <div className="text-center">
                             <Palette size={24} className="mx-auto text-gray-500 mb-2" />
                             <p className="text-xs sm:text-sm text-gray-400">
-                                Wählen Sie eine Farbe aus dem Bild aus
+                                Select a color from the image
                             </p>
                         </div>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3">
-                        {matchingColors.map((color, index) => (
-                            <div
-                                key={index}
-                                className="bg-gray-700/50 backdrop-blur-sm rounded-lg p-2 sm:p-3 flex flex-col items-center"
-                            >
-                                <div
-                                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white mb-2 relative shadow-lg"
-                                    style={{ backgroundColor: color.hex }}
-                                >
-                                    {index === 0 && (
-                                        <CheckCircle
-                                            className="absolute -top-1 -right-1 text-green-500 bg-gray-800 rounded-full"
-                                            size={16}
-                                        />
-                                    )}
-                                </div>
-                                <span className="text-xs sm:text-sm font-medium text-center">
-                                    {color.name}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
+                    <>
+                        <ColorGrid colors={matchingColors} title="Most Similar Colors" />
+                        <ColorGrid colors={complementaryMatches} title="Most Similar Complementary Colors" />
+                    </>
                 )}
             </div>
         </div>

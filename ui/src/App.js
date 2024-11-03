@@ -12,7 +12,7 @@ function App() {
           <WatchFaceColor />
         </div>
         <footer className="text-center py-4 text-gray-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} Apple Watch Farbfinder. Alle Rechte vorbehalten.</p>
+          <p>&copy; {new Date().getFullYear()} Apple Watch Color Finder. All rights reserved.</p>
         </footer>
       </div>
       <div className="fixed inset-0 z-0  bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />

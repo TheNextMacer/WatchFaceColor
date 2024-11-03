@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Upload, Image as ImageIcon, Droplet } from 'lucide-react';
+import { Upload, Droplet } from 'lucide-react';
 
 const ColorChooser = ({ onColorSelect }) => {
     const [imageUrl, setImageUrl] = useState(null);
@@ -13,11 +13,48 @@ const ColorChooser = ({ onColorSelect }) => {
         if (image && canvasRef.current) {
             const canvas = canvasRef.current;
             const ctx = canvas.getContext('2d');
+
+            // Setze Canvas auf Original-Bildgröße
             canvas.width = image.width;
             canvas.height = image.height;
             ctx.drawImage(image, 0, 0);
         }
     }, [image]);
+
+    const calculateScaledPosition = (clientX, clientY, canvas, rect) => {
+        // Berechne das Seitenverhältnis des Bildes
+        const imageAspectRatio = canvas.width / canvas.height;
+        const containerAspectRatio = rect.width / rect.height;
+
+        let scaledWidth, scaledHeight;
+        let offsetX = 0, offsetY = 0;
+
+        // Bestimme die tatsächliche Größe des dargestellten Bildes
+        if (imageAspectRatio > containerAspectRatio) {
+            // Bild ist breiter als Container
+            scaledWidth = rect.width;
+            scaledHeight = rect.width / imageAspectRatio;
+            offsetY = (rect.height - scaledHeight) / 2;
+        } else {
+            // Bild ist höher als Container
+            scaledHeight = rect.height;
+            scaledWidth = rect.height * imageAspectRatio;
+            offsetX = (rect.width - scaledWidth) / 2;
+        }
+
+        // Berechne die relative Position innerhalb des skalierten Bildes
+        const x = clientX - rect.left - offsetX;
+        const y = clientY - rect.top - offsetY;
+
+        // Berechne die Position im Original-Bild
+        const scaleX = canvas.width / scaledWidth;
+        const scaleY = canvas.height / scaledHeight;
+
+        return {
+            x: Math.floor(Math.max(0, Math.min(x * scaleX, canvas.width - 1))),
+            y: Math.floor(Math.max(0, Math.min(y * scaleY, canvas.height - 1)))
+        };
+    };
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -40,20 +77,20 @@ const ColorChooser = ({ onColorSelect }) => {
 
         const canvas = canvasRef.current;
         const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+
+        // Berechne die skalierte Position
+        const { x, y } = calculateScaledPosition(
+            event.clientX,
+            event.clientY,
+            canvas,
+            rect
+        );
+
         setMousePosition({ x, y });
 
-        // Hole die Farbe unter dem Cursor
+        // Hole die Farbe an der korrekten Position
         const ctx = canvas.getContext('2d');
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-        const pixel = ctx.getImageData(
-            Math.floor(x * scaleX),
-            Math.floor(y * scaleY),
-            1,
-            1
-        ).data;
+        const pixel = ctx.getImageData(x, y, 1, 1).data;
         const color = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
         setHoveredColor(color);
     };
@@ -78,7 +115,7 @@ const ColorChooser = ({ onColorSelect }) => {
                 className="flex items-center justify-center w-full py-4 px-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300 font-bold"
             >
                 <Upload className="w-5 h-5 mr-2" />
-                Bild hochladen
+                Select image
             </button>
 
             <div className="relative w-full rounded-2xl overflow-hidden">
