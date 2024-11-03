@@ -1,5 +1,7 @@
 import WatchFaceColor from './components/WatchFaceColor';
 import Header from './components/Header';
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         </footer>
       </div>
       <div className="fixed inset-0 z-0  bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+      <SpeedInsights />
+      <Analytics />
     </div>
   );
 }
