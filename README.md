@@ -1,47 +1,48 @@
-# Apple Watch Farbfinder
+# Apple Watch Color Finder
 
-Eine moderne Webanwendung zum Finden der perfekten Apple Watch Zifferblatt-Farbe, die zu Ihrem Outfit oder Accessoire passt.
+A modern web application for finding the perfect Apple Watch face color to match your outfit or accessory.
 
-![Apple Watch Farbfinder Screenshot](public/og-image.jpg)
+## 🌟 Features
 
-## 🌟 Funktionen
+- **Image Upload**: Upload a picture of your outfit or accessory
+- **Color Selection**: Precisely pick a color from your uploaded image
+- **Real-time Preview**: Magnified view of the selected image area
+- **Smart Color Matching**: Finds the 5 most similar Apple Watch face colors
+- **Complementary Colors**: Suggests matching complementary colors
+- **Responsive Design**: Optimized for desktop and mobile devices
+- **100+ Preset Colors**: Extensive collection of official Apple Watch colors from 2015-2024
 
-- **Bildupload**: Laden Sie ein Bild Ihres Outfits oder Accessoires hoch
-- **Farbauswahl**: Wählen Sie präzise eine Farbe aus dem hochgeladenen Bild
-- **Echtzeit-Vorschau**: Vergrößerte Ansicht des ausgewählten Bildbereichs
-- **Intelligente Farbabstimmung**: Findet die 5 ähnlichsten Apple Watch Zifferblatt-Farben
-- **Responsive Design**: Optimiert für Desktop und mobile Geräte
-- **40+ Voreingestellte Farben**: Umfangreiche Sammlung offizieller Apple Watch Farben
-
-## 🚀 Technologien
+## 🚀 Technologies
 
 - React.js
 - Tailwind CSS
 - Lucide Icons
-- CIE Lab Farbabstandsberechnung
-- Canvas API für Bildmanipulation
+- Vercel Analytics
+- Vercel Speed Insights
+- CIE Lab Color Distance Calculation
+- Canvas API for Image Manipulation
 
 ## 💻 Installation
 
-1. Repository klonen:
-git clone https://github.com/ihr-username/apple-watch-farbfinder.git
-cd apple-watch-farbfinder
+1. Clone the repository:
+git clone https://github.com/TheNextMacer/apple-watch-color-finder.git
+cd apple-watch-color-finder
 
-2. Abhängigkeiten installieren:
+2. Install dependencies:
 cd ui
 npm install
 
-3. Entwicklungsserver starten:
+3. Start development server:
 npm start
 
-## 🤝 Beitragen
+## 🤝 Contributing
 
-1. Fork das Repository
-2. Erstelle einen Feature-Branch (`git checkout -b feature/AmazingFeature`)
-3. Committe deine Änderungen (`git commit -m 'Add some AmazingFeature'`)
-4. Push zum Branch (`git push origin feature/AmazingFeature`)
-5. Öffne einen Pull Request
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a pull request
 
-## 📄 Lizenz
+## 📄 License
 
-Dieses Projekt ist unter der MIT-Lizenz lizenziert.
+This project is licensed under the MIT License.
